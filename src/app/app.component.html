@@ -1,33 +1,96 @@
-<form [formGroup]="form" (ngSubmit)="submit()">
-  <div>
-    <h2>firstName</h2>
-    <input class="form-control" type="text" formControlName="firstName">
-  </div>
-  <div>
-    <h2>lastName</h2>
-    <input class="form-control" type="text" formControlName="lastName">
-    <ng-container *ngIf="this.form.get('lastName').errors && this.form.get('lastName').touched">
-      <span *ngIf="this.form.get('lastName').hasError('required')" class="error">不得為空</span>
-    </ng-container>
-  </div>
-  <div>
-    <h2>phones  <button (click)="addPhone()">+</button></h2>
-    <div formArrayName="phones">
-        <div *ngFor="let phone of phones.controls; index as i">
-          phone {{ i+1 }}：
-          <input [formControlName]="i" placeholder="you phone">
-          <ng-container *ngIf="phone.errors && phone.touched">
-            <span *ngIf="phone.hasError('required')" class="error">不得為空</span>
-            <span *ngIf="phone.hasError('pattern')" class="error">手機格式錯誤</span>
-          </ng-container>
-          <button (click)="removePhone(i)">remove</button>
+<mat-toolbar color="primary">
+  <h2>RX Workshop Practice</h2>
+</mat-toolbar>
+<mat-sidenav-container>
+  <mat-sidenav-content>
+    <!-- <form [formGroup]="registerForm">
+        <section>
+          <mat-form-field>
+            <input matInput placeholder="姓名" formControlName="name" required>
+          </mat-form-field>
+        </section>
+
+        <section>
+          <h5>訂閱電子報</h5>
+          <div formGroupName="subscription">
+            <mat-checkbox [checked]="checkAll" [indeterminate]="indeterminateSubscription" (change)="subscribeAllChange($event)">全部</mat-checkbox>
+            <mat-checkbox *ngFor="let sub of newsletterList" [formControlName]="sub.id">
+              {{ sub.name }}
+            </mat-checkbox>
+          </div>
+        </section>
+
+        <section>
+          <h3>郵遞區號</h3>
+          <mat-form-field>
+            <mat-select placeholder="縣市" formControlName="city">
+              <mat-option *ngFor="let city of regions$ | async as regions" [value]="city">
+                {{ city.CityName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-select placeholder="區域" formControlName="area">
+              <mat-option *ngFor="let area of this.registerForm.get('city').value?.AreaList" [value]="area">
+                {{ area.AreaName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="郵遞區號" [value]="registerForm.get('area')?.value?.ZipCode" disabled="true">
+          </mat-form-field>
+        </section>
+        <div>
+          <button mat-raised-button color="primary" (click)="submit()">送出</button>
+        </div>
+      </form> -->
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <section>
+        <mat-form-field>
+          <input matInput placeholder="Favorite food" formControlName="firstName">
+        </mat-form-field>
+      </section>
+      <section>
+        <mat-form-field>
+          <input matInput placeholder="Favorite food" formControlName="lastName" required>
+        </mat-form-field>
+        <ng-container *ngIf="this.form.get('lastName').errors && this.form.get('lastName').touched">
+          <span *ngIf="this.form.get('lastName').hasError('required')" class="error">不得為空</span>
+        </ng-container>
+      </section>
+      <section>
+          <h5>訂閱電子報</h5>
+          <div formGroupName="subscription">
+            <mat-checkbox [indeterminate]="indeterminateSubscription" formControlName="checkboxAll">全部</mat-checkbox>
+            <mat-checkbox *ngFor="let sub of newsletterList" [formControlName]="sub.id">
+              {{ sub.name }}
+            </mat-checkbox>
+          </div>
+        </section>
+      <div>
+        <h2>phones
+          <button (click)="addPhone()">+</button>
+        </h2>
+        <div formArrayName="phones">
+          <div *ngFor="let phone of phones.controls; index as i">
+            phone {{ i+1 }}：
+            <input [formControlName]="i" placeholder="you phone">
+            <ng-container *ngIf="phone.errors && phone.touched">
+              <span *ngIf="phone.hasError('required')" class="error">不得為空</span>
+              <span *ngIf="phone.hasError('pattern')" class="error">手機格式錯誤</span>
+            </ng-container>
+            <button (click)="removePhone(i)">remove</button>
+          </div>
         </div>
       </div>
-  </div>
 
-  <button [disabled]="form.invalid">Save</button>
-</form>
+      <button [disabled]="form.invalid">Save</button>
+    </form>
 
-{{ form.value | json }}
+    {{ form.value | json }}
 
-<router-outlet></router-outlet>
+    <router-outlet></router-outlet>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>
